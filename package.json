@@ -2,15 +2,18 @@
   "name": "app",
   "version": "1.0.50",
   "scripts": {
-    "dev": "bun --watch src/index.ts",
-    "build": "bun build src/index.ts",
-    "start": "NODE_ENV=production bun src/index.ts",
+    "dev": "bun --watch src/app.ts",
+    "build": "bun build src/app.ts",
+    "start": "NODE_ENV=production bun src/app.ts",
     "test": "bun test"
   },
   "dependencies": {
-    "elysia": "latest"
+    "@elysiajs/swagger": "^0.7.4",
+    "elysia": "latest",
+    "signale": "^1.4.0"
   },
   "devDependencies": {
+    "@types/signale": "^1.4.7",
     "bun-types": "latest"
   },
   "module": "src/index.js"
