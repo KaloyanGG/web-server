@@ -14,8 +14,8 @@ export const swConfig: SwaggerConfiguration = {
         },
         tags: [
             {
-                name: "User",
-                description: "User related routes"
+                name: "Locations",
+                description: "Locations related endpoints"
             }
         ]
     },  

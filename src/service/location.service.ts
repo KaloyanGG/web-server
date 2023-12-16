@@ -18,9 +18,10 @@ class LocationService{
         return Database.getLocations();
     }
 
-    // public addLocation(location: createLocationDTO){
 
-    // }
+    public addLocation(location: any){
+        Database.addLocation(location);
+    }
 }
 
 export default LocationService.getInstance();

@@ -1,4 +1,6 @@
-type Location ={
+import JSONFileEditor from "../utils/json-editor";
+
+type Location = {
     street: string,
     number: string,
     city: string,
@@ -32,9 +34,13 @@ class Database {
     }
 
     public async init() {
-        const dbJson = Bun.file("database.json");
-        const content = await dbJson.json<MyDatabaseContent>();
-        this.db = content;
+        this.db = await Bun
+            .file(Bun.env.DATABASE_FILE_NAME || 'database.json')
+            .json<MyDatabaseContent>();
+    }
+
+    public addLocation(location: Location) {
+        JSONFileEditor.addToJSONCollection('locations', location, Bun.env.DATABASE_FILE_NAME || 'database.json', true);
     }
 
     public getFileContent() {

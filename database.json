@@ -1,45 +1,22 @@
 {
-    "locations": [
-        {
-            "street": "Street 1",
-            "number": "1",
-            "city": "City 1",
-            "country": "Country 1",
-            "imageUrl": "http://example.com/image1.jpg"
-        },
-        {
-            "street": "Street 2",
-            "number": "2",
-            "city": "City 2",
-            "country": "Country 2",
-            "imageUrl": "http://example.com/image2.jpg"
-        },
-        {
-            "street": "Street 3",
-            "number": "3",
-            "city": "City 3",
-            "country": "Country 3",
-            "imageUrl": "http://example.com/image3.jpg"
-        },
-        {
-            "street": "Street 4",
-            "number": "4",
-            "city": "City 4",
-            "country": "Country 4",
-            "imageUrl": "http://example.com/image4.jpg"
-        },
-        {
-            "street": "Street 5",
-            "number": "5",
-            "city": "City 5",
-            "country": "Country 5",
-            "imageUrl": "http://example.com/image5.jpg"
-        }
-    ],
-    "holidays":[
-
-    ],
-    "reservations":[
-
-    ]
+  "locations": [
+    {
+      "id": 1,
+      "street": "Street 1",
+      "number": "1",
+      "city": "City 1",
+      "country": "Country 1",
+      "imageUrl": "http://example.com/image1.jpg"
+    },
+    {
+      "id": 2,
+      "street": "Street 2",
+      "number": "2",
+      "city": "City 2",
+      "country": "Country 2",
+      "imageUrl": "http://example.com/image2.jpg"
+    }
+  ],
+  "holidays": [],
+  "reservations": []
 }
