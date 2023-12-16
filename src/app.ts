@@ -1,8 +1,4 @@
 import Bootstrap from "./bootstrap";
 
-Bootstrap.start();
+await Bootstrap.start();
 
-// const json = Bun.file("database.json");
-// const content = await json.json();
-
-// console.log(content);

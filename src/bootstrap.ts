@@ -1,35 +1,64 @@
 import swagger from '@elysiajs/swagger';
 import Elysia from 'elysia';
-import { signaleConfig } from './config/signale.config';
-import { Signale } from 'signale';
 import { swConfig } from './config/swagger.config';
+import logger from './utils/logger';
+import { RoutesRegistrator } from './routes/registrator';
+import { errorHandlerPlugin } from './plugins/errorHandler.plugin';
+import Database from './database/database';
 
 export default class Bootstrap {
 
-    public static start() {
-        const signale = new Signale(signaleConfig);
-        signale.info('Starting application...');
+    public static async start() {
+        logger.info("Starting ElysiaJS application");
 
-        const app = Bootstrap.initializeElysiaApplication();
-    
+        await Database.init();
+
+        const app
+            = Bootstrap.initializeElysiaApplication();
+
+        // app.guard(
+        //         {
+        //             body: t.Object({
+        //                 hi: t.String()
+        //             }),
+
+        //         },
+        //         (app) =>
+        //             app
+        //                 .post('/lifecycleExplanation', (context) => {
+        //                     logger.info("...Handling...");
+        //                 }, {
+        //                     parse() {
+        //                         logger.info("...Parsing...");
+        //                     },
+        //                     transform() {
+        //                         logger.info("...Transforming...");
+        //                     },
+        //                     beforeHandle() {
+        //                         logger.info("...Before Handle...");
+        //                     },
+        //                     afterHandle() {
+        //                         logger.info("...After Handle...");
+        //                     },
+        //                     error() {
+        //                         logger.info("...Error...");
+        //                     },
+        //                     onResponse() {
+        //                         logger.info("...Response...");
+        //                     },
+        //                 }))
+
         app.listen(Bun.env.PORT || 3000);
     }
 
     private static initializeElysiaApplication() {
-        const app
-            = new Elysia()
-                .use(swagger(swConfig))
-                .get("/", () => "Hello Elysia", {
-                    detail: {
-                        tags: ["User"]
-                    }
-                })
-                .onError((err) => {
-                    console.log(err)
-                    if (err.code === 'NOT_FOUND') return 'Route not found :('
+        const app = new Elysia();
 
-                })
-                .get('/id/:id', ({ params: { id } }) => id);
+        app
+            .use(errorHandlerPlugin)
+            .use(swagger(swConfig));
+
+        RoutesRegistrator.registerRoutes(app);
 
         return app;
     }
