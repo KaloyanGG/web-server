@@ -11,7 +11,7 @@ export class LocationRoutesRegistrator implements IRegistrator {
         app
             .group("/locations", app => {
                 return app
-                    .get("/", () => locationService.getLocations(),
+                    .get("/", async () => await locationService.getLocations(),
                         {
                             detail: {
                                 tags: ['Locations']
@@ -25,7 +25,7 @@ export class LocationRoutesRegistrator implements IRegistrator {
                                 tags: ['Locations']
                             }
                         })
-                    .post("/", ({ body }) => locationService.addLocation(body),
+                    .post("/", async ({ body }) => await locationService.addLocation(body),
                         {
                             body: createLocationDTO,
                             detail: {

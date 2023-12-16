@@ -39,16 +39,20 @@ class Database {
             .json<MyDatabaseContent>();
     }
 
-    public addLocation(location: Location) {
+    public async addLocation(location: Location) {
         JSONFileEditor.addToJSONCollection('locations', location, Bun.env.DATABASE_FILE_NAME || 'database.json', true);
     }
 
-    public getFileContent() {
-        return this.db;
+    public async getFileContent() {
+        return await Bun
+        .file(Bun.env.DATABASE_FILE_NAME || 'database.json')
+        .json<MyDatabaseContent>();
     }
 
-    public getLocations() {
-        return this.db.locations;
+    public async getLocations() {
+        return (await Bun
+            .file(Bun.env.DATABASE_FILE_NAME || 'database.json')
+            .json<MyDatabaseContent>()).locations;
     }
 
     public getHolidays() {

@@ -19,8 +19,8 @@ class LocationService{
     }
 
 
-    public addLocation(location: any){
-        Database.addLocation(location);
+    public async addLocation(location: any){
+        await Database.addLocation(location);
     }
 }
 
