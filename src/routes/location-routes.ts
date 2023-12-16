@@ -1,3 +1,4 @@
+import { t } from "elysia";
 import { createLocationDTO } from "../models/location.dtos";
 import locationService from "../service/location.service";
 import { ElysiaConstructorReturnType, IRegistrator } from "./regisrator.inteface";
@@ -5,7 +6,6 @@ import { ElysiaConstructorReturnType, IRegistrator } from "./regisrator.inteface
 export class LocationRoutesRegistrator implements IRegistrator {
     public registerRoutes(app: ElysiaConstructorReturnType) {
 
-        //todo: add controllers
         //todo: add guards
 
         app
@@ -40,15 +40,16 @@ export class LocationRoutesRegistrator implements IRegistrator {
                                 tags: ['Locations']
                             }
                         })
-                    .delete("/:id", (ctx) => {
-
-                    },
+                    .delete("/:id", async ({ params }) => await locationService.deleteLocationById(params.id),
                         {
+                            params: t.Object({
+                                id: t.Numeric()
+                            }),
                             detail: {
                                 tags: ['Locations']
                             }
                         })
-            });
+            })
+    };
 
-    }
 }

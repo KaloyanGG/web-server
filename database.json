@@ -15,6 +15,14 @@
       "city": "City 2",
       "country": "Country 2",
       "imageUrl": "http://example.com/image2.jpg"
+    },
+    {
+      "street": "Street 3",
+      "number": "1",
+      "city": "City 1",
+      "country": "Country 1",
+      "imageUrl": "http://example.com/image1.jpg",
+      "id": 3
     }
   ],
   "holidays": [],

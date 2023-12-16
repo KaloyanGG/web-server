@@ -8,6 +8,6 @@ export const errorHandlerPlugin
             case 'VALIDATION':
                 return 'Validation error :('
             default:
-                return JSON.stringify(err)
+                return err
         }
     })

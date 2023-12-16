@@ -11,8 +11,6 @@ export default class Bootstrap {
     public static async start() {
         logger.info("Starting ElysiaJS application");
 
-        await Database.init();
-
         const app
             = Bootstrap.initializeElysiaApplication();
 

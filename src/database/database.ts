@@ -18,12 +18,6 @@ class Database {
 
     private static instance: Database;
 
-    private db: MyDatabaseContent = {
-        locations: [],
-        holidays: [],
-        reservations: [],
-    };
-
     private constructor() { }
 
     public static getInstance() {
@@ -33,20 +27,19 @@ class Database {
         return Database.instance;
     }
 
-    public async init() {
-        this.db = await Bun
-            .file(Bun.env.DATABASE_FILE_NAME || 'database.json')
-            .json<MyDatabaseContent>();
-    }
-
     public async addLocation(location: Location) {
         JSONFileEditor.addToJSONCollection('locations', location, Bun.env.DATABASE_FILE_NAME || 'database.json', true);
     }
 
+    public async deleteLocationById(id: Number) {
+        //todo: fix the error handling
+        JSONFileEditor.deleteFromJSONCollectionBy('id', 'locations', id, Bun.env.DATABASE_FILE_NAME || 'database.json');
+    }
+
     public async getFileContent() {
         return await Bun
-        .file(Bun.env.DATABASE_FILE_NAME || 'database.json')
-        .json<MyDatabaseContent>();
+            .file(Bun.env.DATABASE_FILE_NAME || 'database.json')
+            .json<MyDatabaseContent>();
     }
 
     public async getLocations() {
@@ -56,11 +49,11 @@ class Database {
     }
 
     public getHolidays() {
-        return this.db.holidays;
+        // return this.db.holidays;
     }
 
     public getReservations() {
-        return this.db.reservations;
+        // return this.db.reservations;
     }
 
 }

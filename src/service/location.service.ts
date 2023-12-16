@@ -18,9 +18,12 @@ class LocationService{
         return Database.getLocations();
     }
 
-
     public async addLocation(location: any){
         await Database.addLocation(location);
+    }
+
+    public async deleteLocationById(id: Number){
+        await Database.deleteLocationById(id);
     }
 }
 
