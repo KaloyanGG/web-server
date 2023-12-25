@@ -1,4 +1,5 @@
-import Database from "../database/database";
+import Database, { Location, PartialTypeWithId } from "../database/database";
+import { responseLocationDTO } from "../models/location.dtos";
 
 
 class LocationService{
@@ -18,12 +19,25 @@ class LocationService{
         return Database.getLocations();
     }
 
-    public async addLocation(location: any){
-        await Database.addLocation(location);
+    public async getLocationById(id: Number): Promise<Location | undefined>{
+        return (await Database.getLocations()).find(location => location.id === id);
+    }
+
+    public async addLocation(location: any): Promise<Location>{
+        return await Database.addLocation(location);
+    }
+
+    public async updateLocation(location: PartialTypeWithId<Location>): Promise<Location | undefined>{
+        return await Database.updateLocation(location);
     }
 
     public async deleteLocationById(id: Number){
-        await Database.deleteLocationById(id);
+        try{
+            await Database.deleteById(id, 'locations');
+            return true;
+        }catch(e){
+            return false
+        }
     }
 }
 

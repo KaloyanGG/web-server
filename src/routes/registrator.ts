@@ -1,20 +1,18 @@
-import { HolidayRoutesRegistrator } from "./holiday-routes";
-import { LocationRoutesRegistrator } from "./location-routes";
-import { ElysiaConstructorReturnType, IRegistrator } from "./regisrator.inteface";
+import { Elysia } from "elysia"
+import HolidayRoutesRegistrator from "./holiday-routes";
+import LocationRoutesRegistrator from "./location-routes";
+import ReservationRoutesRegistrator from "./reservation-routes";
 
 export class RoutesRegistrator {
-
-    static registerRoutes(app: ElysiaConstructorReturnType) {
-
+    static registerRoutes(app: Elysia) {
         app
             .get("/", (context) => {
                 return "App is running!";
             });
 
-
-        //todo: ask Techo if leave with "new" or use "static"
-        new HolidayRoutesRegistrator().registerRoutes(app);
-        new LocationRoutesRegistrator().registerRoutes(app);
+        LocationRoutesRegistrator.registerRoutes(app);
+        HolidayRoutesRegistrator.registerRoutes(app);
+        ReservationRoutesRegistrator.registerRoutes(app);
     }
 
 }

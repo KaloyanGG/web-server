@@ -9,7 +9,7 @@ export const createLocationDTO = t.Object({
 });
 
 export const responseLocationDTO = t.Object({
-    id: t.Optional(t.BigInt()),
+    id: t.Integer(),
     street: t.Optional(t.String()),
     number: t.Optional(t.String()),
     city: t.Optional(t.String()),
@@ -18,7 +18,7 @@ export const responseLocationDTO = t.Object({
 });
 
 export const updateLocationDTO = t.Object({
-    id: t.Optional(t.BigInt()),
+    id: t.Integer(),
     street: t.Optional(t.String()),
     number: t.Optional(t.String()),
     city: t.Optional(t.String()),

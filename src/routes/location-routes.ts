@@ -1,55 +1,87 @@
 import { t } from "elysia";
-import { createLocationDTO } from "../models/location.dtos";
+import { createLocationDTO, responseLocationDTO, updateLocationDTO } from "../models/location.dtos";
 import locationService from "../service/location.service";
-import { ElysiaConstructorReturnType, IRegistrator } from "./regisrator.inteface";
 
-export class LocationRoutesRegistrator implements IRegistrator {
-    public registerRoutes(app: ElysiaConstructorReturnType) {
+import { Elysia } from "elysia";
 
-        //todo: add guards
+export default class LocationRoutesRegistrator {
+    public static registerRoutes(app: Elysia) {
 
-        app
-            .group("/locations", app => {
-                return app
-                    .get("/", async () => await locationService.getLocations(),
-                        {
-                            detail: {
-                                tags: ['Locations']
-                            }
-                        })
-                    .get("/:id", (ctx) => {
+        app.group("/locations", app => {
 
+            app.get("/", async () => await locationService.getLocations(),
+                {
+                    response: t.Array(responseLocationDTO),
+                    detail: {
+                        tags: ['Locations']
+                    }
+                })
+            app.get("/:id", async ({ params, set }) => {
+                const locationOrUndefined = await locationService.getLocationById(params.id)
+                if (!locationOrUndefined) {
+                    set.status = 404;
+                    return { message: "Location not found." };
+                }
+                return locationOrUndefined;
+
+            },
+                {
+                    response: {
+                        404: t.Object({ message: t.String() }),
+                        200: responseLocationDTO
                     },
-                        {
-                            detail: {
-                                tags: ['Locations']
-                            }
-                        })
-                    .post("/", async ({ body }) => await locationService.addLocation(body),
-                        {
-                            body: createLocationDTO,
-                            detail: {
-                                tags: ['Locations']
-                            }
-                        })
-                    .put("/:id", (ctx) => {
-
+                    params: t.Object({
+                        id: t.Numeric()
+                    }),
+                    detail: {
+                        tags: ['Locations']
+                    }
+                }),
+                app.post("/", async ({ body, set }) => {
+                    const location = await locationService.addLocation(body)
+                    // if (!location) set.status = 400;
+                    set.status = 201;
+                    return location;
+                },
+                    {
+                        body: createLocationDTO,
+                        response: responseLocationDTO,
+                        detail: {
+                            tags: ['Locations']
+                        }
+                    }
+                )
+            app.put("/", async ({ body, set }) => {
+                const location = await locationService.updateLocation(body);
+                if (!location) set.status = 404;
+                return location;
+            },
+                {
+                    body: updateLocationDTO,
+                    response: {
+                        404: t.Undefined(),
+                        200: responseLocationDTO
                     },
-                        {
-                            detail: {
-                                tags: ['Locations']
-                            }
-                        })
-                    .delete("/:id", async ({ params }) => await locationService.deleteLocationById(params.id),
-                        {
-                            params: t.Object({
-                                id: t.Numeric()
-                            }),
-                            detail: {
-                                tags: ['Locations']
-                            }
-                        })
+                    detail: {
+                        tags: ['Locations']
+                    }
+                })
+            app.delete("/:id", async ({ params, set }) => {
+                const isDeleted = await locationService.deleteLocationById(params.id)
+                if (!isDeleted) set.status = 400;
+                return isDeleted;
+            }, {
+                params: t.Object({
+                    id: t.Numeric()
+                }),
+                detail: {
+                    tags: ['Locations']
+                }
             })
+            return app;
+
+        })
+
     };
 
 }
