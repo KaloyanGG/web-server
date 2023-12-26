@@ -2,15 +2,15 @@ import { t } from "elysia";
 import { responseLocationDTO } from "./location.dtos";
 
 export const CreateHolidayDTO = t.Object({
-    location: t.Optional(t.Integer()),
+    location: t.Optional(t.Numeric()),
     title: t.Optional(t.String()),
     startDate: t.Optional(t.String()),
     duration: t.Optional(t.Integer()),
-    price: t.Optional(t.Number()),
+    price: t.Optional(t.Numeric()),
     freeSlots: t.Optional(t.Integer()),
 });
 
-export const responseHolidayDTO = t.Object({
+export const ResponseHolidayDTO = t.Object({
     id: t.Integer(),
     location: responseLocationDTO,
     title: t.Optional(t.String()),
@@ -20,7 +20,7 @@ export const responseHolidayDTO = t.Object({
     freeSlots: t.Optional(t.Integer()),
 });
 
-export const updateHolidayDTO = t.Object({
+export const UpdateHolidayDTO = t.Object({
     id: t.Integer(),
     location: t.Optional(t.Integer()),
     title: t.Optional(t.String()),

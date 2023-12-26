@@ -1,24 +1,31 @@
-import { responseLocationDTO } from './../models/location.dtos';
 import JSONFileEditor from "../utils/json-editor";
 
+export type ObjectWithId = {
+    id: number
+}
+
 export type Location = {
-    id: number,
     street: string,
     number: string,
     city: string,
     country: string,
     imageUrl: string,
-}
+} & ObjectWithId;
 
 export type Holiday = {
-    id: number,
     location: Location,
     title: string,
     startDate: string,
     duration: number,
     price: number,
     freeSlots: number,
-}
+} & ObjectWithId;
+
+export type Reservation = {
+    contactName?: string,
+    phoneNumber?: string,
+    holiday?: Holiday,
+} & ObjectWithId;
 
 type MyDatabaseContent = {
     locations: Location[],
@@ -29,7 +36,11 @@ type MyDatabaseContent = {
 export type PartialTypeWithId<T extends { id: any }> = Required<Pick<T, 'id'>> & Partial<T>;
 
 export type updateHolidayWithOnlyLocationId = Omit<PartialTypeWithId<Holiday>, 'location'> & { location?: number };
+export type ReservationWithHolidayIdInsteadOfHoliday = Omit<Reservation, 'holiday'> & { holiday?: number };
 
+// export type ReservationWithOnlyHolidayId = Omit<PartialTypeWithId<Reservation>, 'holiday'> & { holiday?: number };
+export type UpdateReservationType = ReservationWithHolidayIdInsteadOfHoliday;
+export type NewReservationType = Omit<Reservation, 'id' | 'holiday'> & { holiday?: number, id?: number };
 
 class Database {
 
@@ -51,12 +62,23 @@ class Database {
     }
 
     //repo - no try catch - only fetching the db
-    public async addHoliday(holiday: Holiday): Promise<Holiday>{
+    public async addHoliday(holiday: Holiday): Promise<Holiday> {
         const location = await JSONFileEditor.getFromJSONCollectionBy<Location>('id', 'locations', holiday.location, Bun.env.DATABASE_FILE_NAME || 'database.json');
         holiday.location = location;
         const addedId = await JSONFileEditor.addToJSONCollection('holidays', holiday, Bun.env.DATABASE_FILE_NAME || 'database.json');
         const addedHoliday = await JSONFileEditor.getFromJSONCollectionBy<Holiday>('id', 'holidays', addedId, Bun.env.DATABASE_FILE_NAME || 'database.json');
         return addedHoliday;
+    }
+
+    public async addReservation(reservation: NewReservationType): Promise<Reservation> {
+        const reservationToAdd = { ...reservation } as Reservation;
+        if (reservation.holiday) {
+            const holiday = await JSONFileEditor.getFromJSONCollectionBy<Holiday>('id', 'holidays', reservation.holiday, Bun.env.DATABASE_FILE_NAME || 'database.json');
+            reservationToAdd.holiday = holiday;
+        }
+        const addedId = await JSONFileEditor.addToJSONCollection('reservations', reservationToAdd, Bun.env.DATABASE_FILE_NAME || 'database.json');
+        const addedReservation = await JSONFileEditor.getFromJSONCollectionBy<Reservation>('id', 'reservations', addedId, Bun.env.DATABASE_FILE_NAME || 'database.json');
+        return addedReservation;
     }
 
     public async updateLocation(location: PartialTypeWithId<Location>): Promise<Location | undefined> {
@@ -96,8 +118,8 @@ class Database {
     }
 
     public async updateHoliday(holiday: updateHolidayWithOnlyLocationId): Promise<Holiday> {
-        const holidayToUpdate = await JSONFileEditor.getFromJSONCollectionBy<Holiday>('id', 'holidays', holiday.id, Bun.env.DATABASE_FILE_NAME || 'database.json');        
-        if(holiday.location && holiday.location !== holidayToUpdate.location.id){
+        const holidayToUpdate = await JSONFileEditor.getFromJSONCollectionBy<Holiday>('id', 'holidays', holiday.id, Bun.env.DATABASE_FILE_NAME || 'database.json');
+        if (holiday.location && holiday.location !== holidayToUpdate.location.id) {
             const location = await JSONFileEditor.getFromJSONCollectionBy<Location>('id', 'locations', holiday.location, Bun.env.DATABASE_FILE_NAME || 'database.json');
             holidayToUpdate.location = location;
         }
@@ -108,10 +130,31 @@ class Database {
         return holidayToUpdate;
     }
 
-    public async getReservations() {
-        return (await Bun
-            .file(Bun.env.DATABASE_FILE_NAME || 'database.json')
-            .json<MyDatabaseContent>()).reservations;
+    public async updateReservation(reservation: UpdateReservationType){
+        const reservationToUpdate = await JSONFileEditor.getFromJSONCollectionBy<Reservation>('id', 'reservations', reservation.id, Bun.env.DATABASE_FILE_NAME || 'database.json');
+        if(reservation.holiday){
+            const holiday = await JSONFileEditor.getFromJSONCollectionBy<Holiday>('id', 'holidays', reservation.holiday, Bun.env.DATABASE_FILE_NAME || 'database.json');
+            reservationToUpdate.holiday = holiday;
+        }
+        const newReservation = { ...reservationToUpdate, ...reservation };
+        newReservation.holiday = reservationToUpdate.holiday;
+        await JSONFileEditor.deleteFromJSONCollectionBy('id', 'reservations', reservation.id, Bun.env.DATABASE_FILE_NAME || 'database.json');
+        await JSONFileEditor.addToJSONCollection('reservations', newReservation, Bun.env.DATABASE_FILE_NAME || 'database.json');
+        return reservationToUpdate;
+    }
+
+    public async getReservations(): Promise<Reservation[]> {
+        // return (await Bun
+        //     .file(Bun.env.DATABASE_FILE_NAME || 'database.json')
+        //     .json<MyDatabaseContent>()).reservations;
+
+        const reservations = await JSONFileEditor.getAllFromJSONCollection<Reservation>('reservations', Bun.env.DATABASE_FILE_NAME || 'database.json');
+        return reservations;
+    }
+
+    public async getReservationById(id: Number): Promise<Reservation> {
+        const reservation = await JSONFileEditor.getFromJSONCollectionBy<Reservation>('id', 'reservations', id, Bun.env.DATABASE_FILE_NAME || 'database.json');
+        return reservation;
     }
 
 }

@@ -14,38 +14,6 @@ export default class Bootstrap {
         const app
             = Bootstrap.initializeElysiaApplication();
 
-        // app.guard(
-        //         {
-        //             body: t.Object({
-        //                 hi: t.String()
-        //             }),
-
-        //         },
-        //         (app) =>
-        //             app
-        //                 .post('/lifecycleExplanation', (context) => {
-        //                     logger.info("...Handling...");
-        //                 }, {
-        //                     parse() {
-        //                         logger.info("...Parsing...");
-        //                     },
-        //                     transform() {
-        //                         logger.info("...Transforming...");
-        //                     },
-        //                     beforeHandle() {
-        //                         logger.info("...Before Handle...");
-        //                     },
-        //                     afterHandle() {
-        //                         logger.info("...After Handle...");
-        //                     },
-        //                     error() {
-        //                         logger.info("...Error...");
-        //                     },
-        //                     onResponse() {
-        //                         logger.info("...Response...");
-        //                     },
-        //                 }))
-
         app.listen(Bun.env.PORT || 3000);
     }
 

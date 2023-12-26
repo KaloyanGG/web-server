@@ -23,20 +23,13 @@ class HolidayService {
     }
 
     public async addHoliday(holiday: any): Promise<Holiday> {
-        try {
-            return await Database.addHoliday(holiday);
-        } catch (e) {
-            throw e;
-        }
+        return await Database.addHoliday(holiday);
+
     }
 
 
     public async updateHoliday(holiday: updateHolidayWithOnlyLocationId): Promise<Holiday> {
-        try {
-            return await Database.updateHoliday(holiday);
-        } catch (e) {
-            throw e;
-        }
+        return await Database.updateHoliday(holiday);
     }
 
     public async deleteHolidayById(id: Number) {

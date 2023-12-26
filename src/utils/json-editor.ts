@@ -19,6 +19,21 @@ export default class JSONFileEditor {
     //     }
     // }
 
+    static async getAllFromJSONCollection<T>(collection: string, destination: string = Bun.env.DATABASE_FILE_NAME || 'database.json'): Promise<T[]> {
+        try {
+            const data = await Bun.file(destination).json() as any;
+
+            if (!data[collection]) throw new CollectionError(`Collection '${collection}' does not exist in '${Bun.env.DATABASE_FILE_NAME || 'database.json'}'}`, CollectionErrorCodes.COLLECTION_NOT_FOUND);
+            if (!data[collection].length) throw new CollectionError(`Collection '${collection}' is empty`, CollectionErrorCodes.COLLECTION_IS_EMPTY);
+
+            return data[collection];
+        } catch (e) {
+            logger.error(`Failed to load or save JSON file: ${e}`);
+            throw e;
+        }
+
+    }
+
     static async getFromJSONCollectionBy<T>(key: string, collection: string, value: JSONValue, destination: string = Bun.env.DATABASE_FILE_NAME || 'database.json'): Promise<T> {
 
         const data = await Bun.file(destination).json() as any;
@@ -36,8 +51,8 @@ export default class JSONFileEditor {
 
         const data = await Bun.file('database.json').json() as any;
 
-        if (!data[collection]) throw new Error(`Collection '${collection}' does not exist in ${Bun.env.DATABASE_FILE_NAME || 'database.json'}}`);
-        if (!data[collection].length) throw new Error(`Collection '${collection}' is empty`);
+        if (!data[collection]) throw new CollectionError(`Collection '${collection}' does not exist in ${Bun.env.DATABASE_FILE_NAME || 'database.json'}}`, CollectionErrorCodes.COLLECTION_NOT_FOUND);
+        if (!data[collection].length) throw new CollectionError(`Collection '${collection}' is empty`, CollectionErrorCodes.COLLECTION_IS_EMPTY);
 
         if (!changes.id) {
             const biggestIdUpUntilNow = data[collection].reduce((acc: number, item: any) => {

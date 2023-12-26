@@ -8,15 +8,9 @@ export const swConfig: SwaggerConfiguration = {
     documentation: {
         info:{
             title: "Web API",
-            //todo: change
-            description: "some desc",
-            version: "3.1.0"
-        },
-        tags: [
-            {
-                name: "Locations",
-                description: "Locations related endpoints"
-            }
-        ]
-    },  
+            description: "This is the documentation for the Web API of the ElysiaJS application.\n"+
+            "Warning: The requests which require a body do not show the 'body' field.",
+            version: "3.1.0",
+        }
+    },
 };

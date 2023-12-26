@@ -1,8 +1,9 @@
-import { t } from "elysia";
+import { Context, PreContext, t } from "elysia";
 import { createLocationDTO, responseLocationDTO, updateLocationDTO } from "../models/location.dtos";
 import locationService from "../service/location.service";
 
 import { Elysia } from "elysia";
+
 
 export default class LocationRoutesRegistrator {
     public static registerRoutes(app: Elysia) {
@@ -16,14 +17,13 @@ export default class LocationRoutesRegistrator {
                         tags: ['Locations']
                     }
                 })
-            app.get("/:id", async ({ params, set }) => {
-                const locationOrUndefined = await locationService.getLocationById(params.id)
+            app.get("/:id", async(ctx)=>{
+                const locationOrUndefined = await locationService.getLocationById(ctx.params.id)
                 if (!locationOrUndefined) {
-                    set.status = 404;
+                    ctx.set.status = 404;
                     return { message: "Location not found." };
                 }
                 return locationOrUndefined;
-
             },
                 {
                     response: {
