@@ -27,7 +27,6 @@ class HolidayService {
 
     }
 
-
     public async updateHoliday(holiday: updateHolidayWithOnlyLocationId): Promise<Holiday> {
         return await Database.updateHoliday(holiday);
     }

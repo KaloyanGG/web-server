@@ -32,16 +32,9 @@ export default class ReservationRoutesRegistrator {
                     },
                 })
                 .post("/", async ({ body, set }) => {
-                    try {
-                        const reservation = await reservationService.addReservation(body);
-                        set.status = 201;
-                        return reservation;
-                    } catch (e: any) {
-                        if (e instanceof CollectionError) {
-                            set.status = 404;
-                        }
-                        return { message: e.message };
-                    }
+                    const reservation = await reservationService.addReservation(body);
+                    set.status = 201;
+                    return reservation;
                 },
                     {
                         body: CreateReservationDTO,
@@ -54,17 +47,8 @@ export default class ReservationRoutesRegistrator {
                         },
                     })
                 .put("/", async ({ body, set }) => {
-                    try {
-                        const holiday = await reservationService.updateReservation(body);
-                        return holiday;
-                    } catch (e: any) {
-                        set.status = 400;
-                        if (e instanceof CollectionError && e.getCode() === CollectionErrorCodes.VALUE_NOT_FOUND) {
-                            set.status = 404;
-                            // e.message = "Reservation not found.";
-                        }
-                        return { message: e.message };
-                    }
+                    const holiday = await reservationService.updateReservation(body);
+                    return holiday;
                 }, {
                     body: UpdateReservationDTO,
                     response: {
