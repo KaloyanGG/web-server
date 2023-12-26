@@ -1,13 +1,8 @@
 import Elysia from "elysia";
+import logger from "../utils/logger";
 
 export const errorHandlerPlugin
-    = new Elysia().onError((err) => {
-        switch (err.code) {
-            case 'NOT_FOUND':
-                return 'Route not found :('
-            case 'VALIDATION':
-                return 'Validation error :('
-            default:
-                return err
-        }
+    = new Elysia().onError(({error}) => {
+        logger.error(error);
+        return error.message
     })
