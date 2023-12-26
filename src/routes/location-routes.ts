@@ -3,6 +3,7 @@ import { createLocationDTO, responseLocationDTO, updateLocationDTO } from "../mo
 import locationService from "../service/location.service";
 
 import { Elysia } from "elysia";
+import { CollectionError, CollectionErrorCodes } from "../errors/errors";
 
 
 export default class LocationRoutesRegistrator {
@@ -21,7 +22,9 @@ export default class LocationRoutesRegistrator {
                 const locationOrUndefined = await locationService.getLocationById(ctx.params.id)
                 if (!locationOrUndefined) {
                     ctx.set.status = 404;
-                    return { message: "Location not found." };
+                    // return { message: "Location not found." };
+                    // throw new Error("Location not found.")
+                    throw new CollectionError("Location not found", CollectionErrorCodes.VALUE_NOT_FOUND)
                 }
                 return locationOrUndefined;
             },

@@ -3,21 +3,7 @@ import logger from "./logger";
 
 type JSONValue = string | number | boolean | null | object | [];
 
-//Not typesafe:
 export default class JSONFileEditor {
-
-    // static async readJSONCollection(collection: string, destination: string = Bun.env.DATABASE_FILE_NAME || 'database.json'): Promise<any> {
-    //     try {
-    //         const data = await Bun.file(destination).json() as any;
-
-    //         if(!data[collection]) throw new Error(`Collection "${collection}" does not exist in database.json`);
-    //         if(!data[collection].length) throw new Error(`Collection "${collection}" is empty`);
-
-    //         return data[collection];
-    //     } catch (e) {
-    //         console.error(`Failed to load or save JSON file: ${e}`);
-    //     }
-    // }
 
     static async getAllFromJSONCollection<T>(collection: string, destination: string = Bun.env.DATABASE_FILE_NAME || 'database.json'): Promise<T[]> {
         try {
@@ -31,7 +17,6 @@ export default class JSONFileEditor {
             logger.error(`Failed to load or save JSON file: ${e}`);
             throw e;
         }
-
     }
 
     static async getFromJSONCollectionBy<T>(key: string, collection: string, value: JSONValue, destination: string = Bun.env.DATABASE_FILE_NAME || 'database.json'): Promise<T> {

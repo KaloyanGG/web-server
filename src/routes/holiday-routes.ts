@@ -39,16 +39,9 @@ export default class HolidayRoutesRegistrator {
 
                     })
                 .post("/", async ({ body, set }) => {
-                    try {
-                        const holiday = await holidayService.addHoliday(body);
-                        set.status = 201;
-                        return holiday;
-                    } catch (e: any) {
-                        if (e instanceof CollectionError) {
-                            set.status = 404;
-                        }
-                        return { message: e.message };
-                    }
+                    const holiday = await holidayService.addHoliday(body);
+                    set.status = 201;
+                    return holiday;
                 },
                     {
                         body: CreateHolidayDTO,
@@ -67,15 +60,8 @@ export default class HolidayRoutesRegistrator {
                         }
                     })
                 .put("/", async ({ body, set }) => {
-
-                    try {
-                        const holiday = await holidayService.updateHoliday(body);
-                        return holiday;
-                    } catch (e: any) {
-                        set.status = 400;
-                        return { message: e.message };
-                    }
-
+                    const holiday = await holidayService.updateHoliday(body);
+                    return holiday;
                 }, {
                     body: UpdateHolidayDTO,
                     response: {

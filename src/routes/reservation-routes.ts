@@ -17,16 +17,8 @@ export default class ReservationRoutesRegistrator {
                         }
                     })
                 .get("/:id", async ({ params, set }) => {
-                    try {
-                        const reservation = await reservationService.getReservationById(params.id);
-                        return reservation;
-                    } catch (e: any) {
-                        if (e instanceof CollectionError && e.getCode() === CollectionErrorCodes.VALUE_NOT_FOUND) {
-                            set.status = 404;
-                            e.message = "Reservation not found.";
-                        }
-                        return { message: e.message };
-                    }
+                    const reservation = await reservationService.getReservationById(params.id);
+                    return reservation;
                 }, {
                     params: t.Object({
                         id: t.Numeric()
