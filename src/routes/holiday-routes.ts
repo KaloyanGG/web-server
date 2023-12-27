@@ -64,7 +64,7 @@ export default class HolidayRoutesRegistrator {
                 }, {
                     body: UpdateHolidayDTO,
                     response: {
-                        404: t.Object({ message: t.String() }),
+                        400: t.Object({ message: t.String() }),
                         200: ResponseHolidayDTO
                     },
                     beforeHandle: ({ body, set }) => {

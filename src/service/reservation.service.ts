@@ -1,5 +1,5 @@
 
-import Database, { NewReservationType, Reservation, UpdateReservationType } from "../database/database";
+import Database from "../database/database";
 
 class ReservationService {
     private static instance: ReservationService;
@@ -21,7 +21,7 @@ class ReservationService {
         return await Database.getReservationById(id);
     }
 
-    public async addReservation(reservation: NewReservationType): Promise<Reservation> {
+    public async addReservation(reservation: CreateReservationType): Promise<Reservation> {
         return await Database.addReservation(reservation);
     }
 

@@ -1,4 +1,4 @@
-import Database, { Holiday, PartialTypeWithId, updateHolidayWithOnlyLocationId } from "../database/database";
+import Database from "../database/database";
 
 class HolidayService {
 
@@ -22,12 +22,11 @@ class HolidayService {
         return (await Database.getHolidays()).find(holiday => holiday.id === id);
     }
 
-    public async addHoliday(holiday: any): Promise<Holiday> {
+    public async addHoliday(holiday: CreateHolidayType): Promise<Holiday> {
         return await Database.addHoliday(holiday);
-
     }
 
-    public async updateHoliday(holiday: updateHolidayWithOnlyLocationId): Promise<Holiday> {
+    public async updateHoliday(holiday: UpdateHolidayType): Promise<Holiday> {
         return await Database.updateHoliday(holiday);
     }
 

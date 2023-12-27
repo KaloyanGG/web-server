@@ -1,43 +1,36 @@
-import Database, { Location, PartialTypeWithId } from "../database/database";
-import { responseLocationDTO } from "../models/location.dtos";
+import Database from "../database/database";
 
-
-class LocationService{
+class LocationService {
     private static instance: LocationService;
 
-    private constructor() {}
+    private constructor() { }
 
     public static getInstance() {
         if (!this.instance) {
             this.instance = new LocationService();
         }
-        
+
         return this.instance;
     }
 
-    public getLocations(){
+    public getLocations() {
         return Database.getLocations();
     }
 
-    public async getLocationById(id: Number): Promise<Location | undefined>{
-        return (await Database.getLocations()).find(location => location.id === id);
+    public async getLocationById(id: Number): Promise<Location> {
+        return await Database.getLocationById(id);
     }
 
-    public async addLocation(location: any): Promise<Location>{
+    public async addLocation(location: CreateLocationType): Promise<Location> {
         return await Database.addLocation(location);
     }
 
-    public async updateLocation(location: PartialTypeWithId<Location>): Promise<Location | undefined>{
+    public async updateLocation(location: UpdateLocationType): Promise<Location> {
         return await Database.updateLocation(location);
     }
 
-    public async deleteLocationById(id: Number){
-        try{
-            await Database.deleteById(id, 'locations');
-            return true;
-        }catch(e){
-            return false
-        }
+    public async deleteLocationById(id: Number) {
+        await Database.deleteById(id, 'locations');
     }
 }
 
