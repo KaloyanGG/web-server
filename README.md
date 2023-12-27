@@ -13,4 +13,4 @@ Bun is a framework for building web applications. It provides a set of tools and
 Elysia is a library for building RESTful APIs. It provides a set of tools and libraries that simplify the process of creating, testing, and documenting APIs.
 
 ## Known Issues
-Please note that the Swagger documentation is currently not working correctly with Elysia. I'm aware of this issue and working on a fix. In the meantime, please refer to the Elysia documentation for information on how to use the API.
+Please note that the Swagger documentation is currently not working correctly with Elysia. I'm aware of this issue and working on a fix. However, at least you can check it out at http://localhost:8080/docs.

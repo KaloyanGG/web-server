@@ -77,27 +77,6 @@
   ],
   "reservations": [
     {
-      "id": 1,
-      "contactName": "Contact 1",
-      "phoneNumber": "123456789",
-      "holiday": {
-        "id": 1,
-        "location": {
-          "id": 1,
-          "street": "Street 1",
-          "number": "1",
-          "city": "City 1",
-          "country": "Country 1",
-          "imageUrl": "https://picsum.photos/id/201/200/300"
-        },
-        "title": "Holiday 1",
-        "startDate": "2023-12-23T10:36:29.472Z",
-        "duration": 5,
-        "price": 200.4,
-        "freeSlots": 6
-      }
-    },
-    {
       "id": 2,
       "contactName": "Contact 2",
       "phoneNumber": "987654321",
@@ -116,6 +95,27 @@
         "duration": 3,
         "price": 45.6,
         "freeSlots": 25
+      }
+    },
+    {
+      "id": 1,
+      "contactName": "Contact 1",
+      "phoneNumber": "123456789",
+      "holiday": {
+        "id": 1,
+        "location": {
+          "id": 1,
+          "street": "Street 1",
+          "number": "1",
+          "city": "City 1",
+          "country": "Country 1",
+          "imageUrl": "https://picsum.photos/id/201/200/300"
+        },
+        "title": "Holiday 1",
+        "startDate": "2023-12-23T10:36:29.472Z",
+        "duration": 5,
+        "price": 200.4,
+        "freeSlots": 6
       }
     }
   ]
