@@ -1,7 +1,6 @@
 import { t } from "elysia";
 import { CreateHolidayDTO, ResponseHolidayDTO, UpdateHolidayDTO } from "../models/holiday.dtos";
 import holidayService from "../service/holiday.service";
-import { CollectionError, CollectionErrorCodes } from "../errors/errors";
 import { Elysia } from "elysia";
 import { isValidDate } from "../utils/date-validator";
 

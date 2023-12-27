@@ -2,19 +2,21 @@ import swagger from '@elysiajs/swagger';
 import Elysia from 'elysia';
 import { swConfig } from './config/swagger.config';
 import logger from './utils/logger';
-import { RoutesRegistrator } from './routes/registrator';
 import { errorHandlerPlugin } from './plugins/errorHandler.plugin';
-import Database from './database/database';
+import registerRoutesPlugin from './plugins/routes.plugin';
+import config from './config/environment';
 
 export default class Bootstrap {
 
     public static async start() {
-        logger.info("Starting ElysiaJS application");
+        logger.info("Starting ElysiaJS application.");
 
         const app
             = Bootstrap.initializeElysiaApplication();
 
-        app.listen(Bun.env.PORT || 3000);
+        app.listen(config.PORT);
+
+        logger.info(`Application is listening on port ${config.PORT}.`);
     }
 
     private static initializeElysiaApplication() {
@@ -22,9 +24,8 @@ export default class Bootstrap {
 
         app
             .use(errorHandlerPlugin)
-            .use(swagger(swConfig));
-
-        RoutesRegistrator.registerRoutes(app);
+            .use(swagger(swConfig))
+            .use(registerRoutesPlugin)
 
         return app;
     }
