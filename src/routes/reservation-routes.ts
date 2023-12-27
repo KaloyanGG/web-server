@@ -1,8 +1,6 @@
 import Elysia, { t } from "elysia";
 import reservationService from "../service/reservation.service";
 import { CreateReservationDTO, ResponseReservationDTO, UpdateReservationDTO } from "../models/reservation.dtos";
-import logger from "../utils/logger";
-import { CollectionError, CollectionErrorCodes } from "../errors/errors";
 
 export default class ReservationRoutesRegistrator {
     public static registerRoutes(app: Elysia): void {
@@ -17,14 +15,12 @@ export default class ReservationRoutesRegistrator {
                         }
                     })
                 .get("/:id", async ({ params, set }) => {
-                    const reservation = await reservationService.getReservationById(params.id);
-                    return reservation;
+                    return await reservationService.getReservationById(params.id);
                 }, {
                     params: t.Object({
                         id: t.Numeric()
                     }),
                     response: {
-                        404: t.Object({ message: t.String() }),
                         200: ResponseReservationDTO
                     },
                     detail: {
@@ -39,7 +35,6 @@ export default class ReservationRoutesRegistrator {
                     {
                         body: CreateReservationDTO,
                         response: {
-                            404: t.Object({ message: t.String() }),
                             201: ResponseReservationDTO
                         },
                         detail: {
@@ -47,12 +42,10 @@ export default class ReservationRoutesRegistrator {
                         },
                     })
                 .put("/", async ({ body, set }) => {
-                    const holiday = await reservationService.updateReservation(body);
-                    return holiday;
+                    return await reservationService.updateReservation(body);
                 }, {
                     body: UpdateReservationDTO,
                     response: {
-                        404: t.Object({ message: t.String() }),
                         200: ResponseReservationDTO
                     },
                     detail: {

@@ -2,7 +2,7 @@ import { t } from "elysia";
 import { responseLocationDTO } from "./location.dtos";
 
 export const CreateHolidayDTO = t.Object({
-    location: t.Optional(t.Numeric()),
+    location: t.Numeric(),
     title: t.Optional(t.String()),
     startDate: t.Optional(t.String()),
     duration: t.Optional(t.Integer()),

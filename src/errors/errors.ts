@@ -1,5 +1,3 @@
-import {t} from "elysia";
-
 export enum CollectionErrorCodes{
     COLLECTION_NOT_FOUND = "COLLECTION_NOT_FOUND",
     COLLECTION_IS_EMPTY = "COLLECTION_IS_EMPTY",
