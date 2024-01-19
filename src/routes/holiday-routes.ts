@@ -9,9 +9,26 @@ export default class HolidayRoutesRegistrator {
 
         app.group("/holidays", app => {
             return app
-                .get("/", async () => await holidayService.getHolidays(),
+                .get("/", async ({query}) => {
+                    let holidays = await holidayService.getHolidays()
+                    if (query.location) {
+                        holidays = holidays.filter(holiday => holiday.location.id === query.location)
+                    }
+                    if (query.startDate) {
+                        holidays = holidays.filter(holiday => holiday.startDate === query.startDate)
+                    }
+                    if (query.duration) {
+                        holidays = holidays.filter(holiday => holiday.duration === query.duration)
+                    }
+                    return holidays;
+                },
                     {
                         response: t.Array(ResponseHolidayDTO),
+                        query: t.Object({
+                            location: t.Optional(t.Numeric()),
+                            startDate: t.Optional(t.String()),
+                            duration: t.Optional(t.Numeric()),
+                        }),
                         detail: {
                             tags: ['Holidays']
                         }
